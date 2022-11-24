@@ -32,20 +32,19 @@ Clear-Host
 
 Write-Host "Installing Base Applications" -ForegroundColor Red -BackgroundColor Yellow
 Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))
-choco upgrade chocolatey -force -y
-choco upgrade adobereader -force -y
-choco upgrade googlechrome -force -y
-choco upgrade firefox -force -y
-choco upgrade microsoft-teams.install -force -y
-choco upgrade 7zip.install -force -y
-choco upgrade microsoft-edge -force -y
-choco upgrade zoom -force -y
-choco upgrade vlc -force -y
-choco upgrade 7zip -force -y
-choco upgrade powershell -force -y
-choco upgrade office365business --params "'/productid:O365BusinessRetail /exclude: Groove Lync Skype /language:en-US /updates:TRUE /eula:FALSE'" -force -y
-#choco upgrade microsoft-office-deployment /64bit /DisableUpdate FALSE /Channel Current /Language en-us /Product O365BusinessRetail
-choco upgrade dotnetfx -force -y
+choco upgrade chocolatey -force -y --limitoutput
+choco upgrade adobereader -force -y --limitoutput
+choco upgrade googlechrome -force -y --limitoutput
+choco upgrade firefox -force -y --limitoutput
+choco upgrade microsoft-teams.install -force -y --limitoutput
+choco upgrade 7zip.install -force -y --limitoutput
+choco upgrade microsoft-edge -force -y --limitoutput
+choco upgrade zoom -force -y --limitoutput
+choco upgrade vlc -force -y --limitoutput
+choco upgrade 7zip -force -y --limitoutput
+choco upgrade powershell -force -y --limitoutput
+choco upgrade office365business --package-parameters="'/productid:O365BusinessRetail /exclude: Groove Lync Skype /language:en-US /updates:TRUE /eula:TRUE'" -force -y --limitoutput
+choco upgrade dotnetfx -force -y --limitoutput
 Clear-Host
 
 
@@ -57,7 +56,7 @@ Write-Host "Determined the Manufacturer of this workstation is $Manufacturer. Pr
 If ($Manufacturer -like '*Dell*') {
 
          Write-Host "Installing Dell Command Update. Updating drivers and BIOS." -ForegroundColor Red -BackgroundColor Yellow
-         choco upgrade dellcommandupdate -force -y
+         choco upgrade dellcommandupdate -force -y --limitoutput
          Start-Sleep -Seconds 60
          Start-Service -Name DellClientManagementService
 
@@ -79,7 +78,7 @@ If ($Manufacturer -like '*Dell*') {
 
 If ($Manufacturer -like '*Lenovo*') {
 
-       choco upgrade lenovo-thinkvantage-system-update -force -y
+       choco upgrade lenovo-thinkvantage-system-update -force -y --limitoutput
                     Write-Host "Installing Lenovo System Update. Updating drivers and BIOS." -ForegroundColor Red -BackgroundColor Yellow
                     Start-Sleep -Seconds 60
                     Start-Process "C:\Program Files (x86)\Lenovo\System Update\Tvsu.exe" -ArgumentList "/CM -search A -action INSTALL -noicon -includerebootpackages 1,3,4 -noreboot"
@@ -88,7 +87,7 @@ If ($Manufacturer -like '*Lenovo*') {
 
 If ($Manufacturer -like '*HP*' -or '*Hewlett*') {
 
-        choco upgrade hpsupportassistant -force -y
+        choco upgrade hpsupportassistant -force -y --limitoutput
                     Write-Host "Installing HP Support Assistant. Updating drivers and BIOS." -ForegroundColor Red -BackgroundColor Yellow
                     Start-Sleep -Seconds 60
                     Start-Process "C:\Utils\HPSA8\InstallHPSA.exe" -ArgumentList "/S /v/qn"
