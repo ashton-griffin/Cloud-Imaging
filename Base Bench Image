@@ -1,0 +1,70 @@
+$SN = Get-WmiObject win32_bios | Select -ExpandProperty SerialNumber
+Rename-Computer -NewName 'RenameMe-$SN'
+Start-Process C:\Utils\CatchallAutomate.msi -ArgumentList '/qn' -WindowStyle Hidden
+
+
+Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))
+choco upgrade chocolatey
+choco upgrade adobereader -y
+choco upgrade googlechrome -y
+choco upgrade firefox -y
+choco upgrade microsoft-teams.install -y
+choco upgrade 7zip.install -y
+choco upgrade microsoft-edge -y
+choco upgrade zoom -y
+choco upgrade vlc -y
+choco upgrade 7zip -y
+choco upgrade powershell -y
+choco upgrade office365business --params "'/productid:O365HomePremRetail /exclude: Groove Lync Skype /language:en-US /updates:TRUE /eula:FALSE'" -force -y
+#choco upgrade microsoft-office-deployment /64bit /DisableUpdate FALSE /Channel Current /Language en-us /Product O365BusinessRetail
+choco upgrade lansweeper -force -y
+choco upgrade dotnetfx -force -y
+
+$Manufacturer = Get-WmiObject win32_bios | Select -ExpandProperty Manufacturer
+New-Item -Path C:\ -Name Utils -ItemType Directory -Force -ErrorAction SilentlyContinue
+
+If ($Manufacturer -like '*Dell*') {
+         Set-ExecutionPolicy -ExecutionPolicy Bypass -Force -Scope Process
+         [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
+         choco upgrade dellcommandupdate -y
+         Start-Sleep -Seconds 60
+         Start-Service -Name DellClientManagementService
+
+         $DCU_x86 = "C:\Program Files (x86)\Dell\CommandUpdate\dcu-cli.exe"
+         $DCU_x64 = "C:\Program Files\Dell\CommandUpdate\dcu-cli.exe"
+
+     If ($DCU_x86 -eq $true){
+
+                    Start-Process "C:\Program Files (x86)\Dell\CommandUpdate\dcu-cli.exe" -ArgumentList "/applyUpdates" -WindowStyle Hidden
+
+                        }
+
+     If ($DCU_x64 -eq $true){
+
+                    Start-Process "C:\Program Files\Dell\CommandUpdate\dcu-cli.exe" -ArgumentList "/applyUpdates" -WindowStyle Hidden
+
+                        }
+                                 }
+
+If ($Manufacturer -like '*Lenovo*') {
+
+       choco upgrade lenovo-thinkvantage-system-update -y
+                    Start-Sleep -Seconds 60
+                    Start-Process "C:\Program Files (x86)\Lenovo\System Update\Tvsu.exe" -ArgumentList "/CM -search A -action INSTALL -noicon -includerebootpackages 1,3,4 -noreboot" -WindowStyle Hidden
+
+}
+
+If ($Manufacturer -like '*HP*' -or '*Hewlett*') {
+
+        choco upgrade hpsupportassistant -y
+                    Start-Sleep -Seconds 60
+                    Start-Process "C:\Utils\HPSA8\InstallHPSA.exe" -ArgumentList "/S /v/qn" -WindowStyle Hidden
+
+}
+
+
+Set-ExecutionPolicy -ExecutionPolicy Bypass -Force -Scope Process
+[System.Net.ServicePointManager]::SecurityProtocol = [System.Net.SecurityProtocolType]::Tls12
+Install-PackageProvider -Name NuGet -Force
+Install-Module -Name PSWindowsUpdate -Force
+Import-Module PSWindowsUpdate; Install-WindowsUpdate -AcceptAll -Install -AutoReboot:$false
