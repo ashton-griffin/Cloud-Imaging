@@ -2,6 +2,18 @@ $SN = Get-WmiObject win32_bios | Select -ExpandProperty SerialNumber
 Rename-Computer -NewName 'RenameMe-$SN'
 Start-Process C:\Utils\CatchallAutomate.msi -ArgumentList '/qn' -WindowStyle Hidden
 
+$MicrosoftBloatwareApps = Get-AppxPackage | Where PackageFullName -NotLike *Store*
+
+foreach ($MicrosoftBloatwareApp in $MicrosoftBloatwareApps) {
+            $PackageFullName = $MicrosoftBloatwareApp.PackageFullName
+            Remove-AppxPackage -package $PackageFullName -confirm:$false -ErrorAction SilentlyContinue
+                                                            }
+                                                            
+$WindowsPCHealthCheck = Get-WmiObject win32_product | Where Name -Like "Windows PC Health Check"
+$WindowsPCHealthCheck.Uninstall()
+$McAfee = Get-WmiObject win32_product | Where Vendor -Like "*McAfee*"
+$McAfee.Uninstall()
+
 
 Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))
 choco upgrade chocolatey
@@ -15,9 +27,8 @@ choco upgrade zoom -y
 choco upgrade vlc -y
 choco upgrade 7zip -y
 choco upgrade powershell -y
-choco upgrade office365business --params "'/productid:O365HomePremRetail /exclude: Groove Lync Skype /language:en-US /updates:TRUE /eula:FALSE'" -force -y
+choco upgrade office365business --params "'/productid:O365BusinessRetail /exclude: Groove Lync Skype /language:en-US /updates:TRUE /eula:FALSE'" -force -y
 #choco upgrade microsoft-office-deployment /64bit /DisableUpdate FALSE /Channel Current /Language en-us /Product O365BusinessRetail
-choco upgrade lansweeper -force -y
 choco upgrade dotnetfx -force -y
 
 $Manufacturer = Get-WmiObject win32_bios | Select -ExpandProperty Manufacturer
