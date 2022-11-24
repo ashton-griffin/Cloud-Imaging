@@ -1,21 +1,27 @@
-Write-Host "Beginning Base Bench Setup... Sit tight, this may take a little while!!!!!!" -ForegroundColor Blue -BackgroundColor Yellow
+Install-Module WriteAscii -Force
+Write-Ascii -InputObject "S5 Logic - Cloud Imaging"
+
+Write-Ascii -InputObject "Beginning Base Bench Setup"
+Write-Host "Sit tight, grab a drink this may take a while!!!" -ForegroundColor Blue -BackgroundColor Yellow
 
 Write-Host "Setting script execution policy and to TLS1.2" -ForegroundColor Blue -BackgroundColor Yellow
          Set-ExecutionPolicy -ExecutionPolicy Bypass -Force -Scope Process
          [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
-         
+
+
+Write-Ascii -InputObject "Renaming Computer"         
 Write-Host "Renaming Computer" -ForegroundColor Blue -BackgroundColor Yellow
 $SN = Get-WmiObject win32_bios | Select -ExpandProperty SerialNumber
 Rename-Computer -NewName 'RenameMe-$SN'
 Write-Host "Computer Renamed to RenameMe-$SN" -ForegroundColor Blue -BackgroundColor Yellow
 Clear-Host
 
-
+Write-Ascii -InputObject "Installing Catchall version of RMM"
 Write-Host "Installing Connectwise Automate. Please be sure to move to proper company" -ForegroundColor Blue -BackgroundColor Yellow
 Start-Process C:\Utils\CatchallAutomate.msi -ArgumentList '/qn'
 Clear-Host
 
-
+Write-Ascii -InputObject "Removing OEM Bloat"
 Write-Host "Removing all OEM Bloatware" -ForegroundColor Blue -BackgroundColor Yellow
 $MicrosoftBloatwareApps = Get-AppxPackage | Where PackageFullName -NotLike *Store*
 foreach ($MicrosoftBloatwareApp in $MicrosoftBloatwareApps) {
@@ -30,6 +36,7 @@ $McAfee.Uninstall()
 Clear-Host
 
 
+Write-Ascii -InputObject "Installing Base Applications"
 Write-Host "Installing Base Applications" -ForegroundColor Blue -BackgroundColor Yellow
 Invoke-Expression ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))
 choco upgrade chocolatey -force -y --limitoutput
@@ -48,6 +55,7 @@ choco upgrade dotnetfx -force -y --limitoutput
 Clear-Host
 
 
+Write-Ascii -InputObject "Installing Manufacturer Support Software"
 Write-Host "Installing Manufacturer driver support software. Also, installing driver and BIOS updates." -ForegroundColor Blue -BackgroundColor Yellow
 $Manufacturer = Get-WmiObject win32_bios | Select -ExpandProperty Manufacturer
 Write-Host "Determined the Manufacturer of this workstation is $Manufacturer. Proceeding with correct driver software." -ForegroundColor Blue -BackgroundColor Yellow
@@ -103,7 +111,7 @@ If ($Manufacturer -like '*Hewlett*') {
 
 Clear-Host
 
-
+Write-Ascii -InputObject "Installing available Windows and optional updates"
 Write-Host "Installing PSWindowsUpdate Module. Installing ALL available Windows and Optional Updates, including any feature updates." -ForegroundColor Blue -BackgroundColor Yellow
 Install-PackageProvider -Name NuGet -Force
 Install-Module -Name PSWindowsUpdate -Force
@@ -125,5 +133,6 @@ if($delay -gt 1)
         Write-Output "Rebooting computer in $delay seconds -ForegroundColor Blue -BackgroundColor Yellow";
     }
     }
+
 Shutdown /r
 Exit
