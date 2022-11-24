@@ -12,7 +12,7 @@ Clear-Host
 
 
 Write-Host "Installing Connectwise Automate. Please be sure to move to proper company" -ForegroundColor Blue -BackgroundColor Yellow
-#Start-Process "C:\Utils\CatchallAutomate.msi" -ArgumentList '/qn'
+Start-Process C:\Utils\CatchallAutomate.msi -ArgumentList '/qn'
 Clear-Host
 
 
@@ -34,7 +34,7 @@ Write-Host "Installing Base Applications" -ForegroundColor Blue -BackgroundColor
 Invoke-Expression ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))
 choco upgrade chocolatey -force -y --limitoutput
 choco upgrade adobereader -force -y --limitoutput
-choco upgrade googlechrome -force -y --limitoutput --ignore-checksums
+choco upgrade googlechrome -force -y --limitoutput
 choco upgrade firefox -force -y --limitoutput
 choco upgrade microsoft-teams.install -force -y --limitoutput
 choco upgrade 7zip.install -force -y --limitoutput
@@ -51,7 +51,6 @@ Clear-Host
 Write-Host "Installing Manufacturer driver support software. Also, installing driver and BIOS updates." -ForegroundColor Blue -BackgroundColor Yellow
 $Manufacturer = Get-WmiObject win32_bios | Select -ExpandProperty Manufacturer
 Write-Host "Determined the Manufacturer of this workstation is $Manufacturer. Proceeding with correct driver software." -ForegroundColor Blue -BackgroundColor Yellow
-
 
 If ($Manufacturer -like '*Dell*') {
 
@@ -76,7 +75,6 @@ If ($Manufacturer -like '*Dell*') {
                         }
                                  }
 
-
 If ($Manufacturer -like '*Lenovo*') {
 
        choco upgrade lenovo-thinkvantage-system-update -force -y --limitoutput
@@ -86,8 +84,7 @@ If ($Manufacturer -like '*Lenovo*') {
 
                                       }
 
-
-If ($Manufacturer -like '*HP*' -or '*Hewlett*') {
+If ($Manufacturer -like '*HP*') {
 
         choco upgrade hpsupportassistant -force -y --limitoutput
                     Write-Host "Installing HP Support Assistant. Updating drivers and BIOS." -ForegroundColor Blue -BackgroundColor Yellow
@@ -95,13 +92,38 @@ If ($Manufacturer -like '*HP*' -or '*Hewlett*') {
                     Start-Process "C:\Utils\HPSA8\InstallHPSA.exe" -ArgumentList "/S /v/qn"
 
                                                 }
+If ($Manufacturer -like '*Hewlett*') {
+
+        choco upgrade hpsupportassistant -force -y --limitoutput
+                    Write-Host "Installing HP Support Assistant. Updating drivers and BIOS." -ForegroundColor Blue -BackgroundColor Yellow
+                    Start-Sleep -Seconds 60
+                    Start-Process "C:\Utils\HPSA8\InstallHPSA.exe" -ArgumentList "/S /v/qn"
+
+                                                }
+
 Clear-Host
 
 
 Write-Host "Installing PSWindowsUpdate Module. Installing ALL available Windows and Optional Updates, including any feature updates." -ForegroundColor Blue -BackgroundColor Yellow
 Install-PackageProvider -Name NuGet -Force
 Install-Module -Name PSWindowsUpdate -Force
-Get-WindowsUpdate -Install -AcceptAll -AutoReboot | Select Result, Title | FT
+Get-WindowsUpdate -Install -AutoReboot
 Clear-Host
 
+
+$delay = 10
+if($delay -gt 1)
+    {
+
+    Write-Output "Rebooting computer in $delay seconds -ForegroundColor Blue -BackgroundColor Yellow";
+    #Start-Sleep -Seconds $delay
+     
+    while($delay -gt 0)
+    {
+        Start-Sleep -Seconds 1;
+        $delay -= 1;
+        Write-Output "Rebooting computer in $delay seconds -ForegroundColor Blue -BackgroundColor Yellow";
+    }
+    }
+Shutdown /r
 Exit
