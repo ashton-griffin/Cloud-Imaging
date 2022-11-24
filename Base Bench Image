@@ -34,7 +34,7 @@ Write-Host "Installing Base Applications" -ForegroundColor Blue -BackgroundColor
 Invoke-Expression ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))
 choco upgrade chocolatey -force -y --limitoutput
 choco upgrade adobereader -force -y --limitoutput
-choco upgrade googlechrome -force -y --limitoutput
+choco upgrade googlechrome -force -y --limitoutput --ignore-checksums
 choco upgrade firefox -force -y --limitoutput
 choco upgrade microsoft-teams.install -force -y --limitoutput
 choco upgrade 7zip.install -force -y --limitoutput
