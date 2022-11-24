@@ -1,4 +1,9 @@
 Write-Host "Beginning Base Bench Setup... Sit tight, this may take a little while!!!!!!" -ForegroundColor Red -BackgroundColor Yellow
+
+Write-Host "Setting script execution policy and to TLS1.2" -ForegroundColor Red -BackgroundColor Yellow
+         Set-ExecutionPolicy -ExecutionPolicy Bypass -Force -Scope Process
+         [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
+         
 Write-Host "Renaming Computer" -ForegroundColor Red -BackgroundColor Yellow
 $SN = Get-WmiObject win32_bios | Select -ExpandProperty SerialNumber
 Rename-Computer -NewName 'RenameMe-$SN'
@@ -50,15 +55,14 @@ New-Item -Path C:\ -Name Utils -ItemType Directory -Force -ErrorAction SilentlyC
 Write-Host "Determined the Manufacturer of this workstation is $Manufacturer. Proceeding with correct driver software." -ForegroundColor Red -BackgroundColor Yellow
 
 If ($Manufacturer -like '*Dell*') {
+
          Write-Host "Installing Dell Command Update. Updating drivers and BIOS." -ForegroundColor Red -BackgroundColor Yellow
-         Set-ExecutionPolicy -ExecutionPolicy Bypass -Force -Scope Process
-         [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
          choco upgrade dellcommandupdate -force -y
          Start-Sleep -Seconds 60
          Start-Service -Name DellClientManagementService
 
-         $DCU_x86 = "C:\Program Files (x86)\Dell\CommandUpdate\dcu-cli.exe"
-         $DCU_x64 = "C:\Program Files\Dell\CommandUpdate\dcu-cli.exe"
+         $DCU_x86 = Test-Path "C:\Program Files (x86)\Dell\CommandUpdate\dcu-cli.exe"
+         $DCU_x64 = Test-Path "C:\Program Files\Dell\CommandUpdate\dcu-cli.exe"
 
      If ($DCU_x86 -eq $true){
 
@@ -80,7 +84,7 @@ If ($Manufacturer -like '*Lenovo*') {
                     Start-Sleep -Seconds 60
                     Start-Process "C:\Program Files (x86)\Lenovo\System Update\Tvsu.exe" -ArgumentList "/CM -search A -action INSTALL -noicon -includerebootpackages 1,3,4 -noreboot"
 
-}
+                                      }
 
 If ($Manufacturer -like '*HP*' -or '*Hewlett*') {
 
@@ -89,7 +93,7 @@ If ($Manufacturer -like '*HP*' -or '*Hewlett*') {
                     Start-Sleep -Seconds 60
                     Start-Process "C:\Utils\HPSA8\InstallHPSA.exe" -ArgumentList "/S /v/qn"
 
-}
+                                                }
 Clear-Host
 
 
@@ -102,35 +106,19 @@ Import-Module PSWindowsUpdate; Install-WindowsUpdate -AcceptAll -Install -AutoRe
 Clear-Host
 
 
-Write-Host "Base Bench Setup script has completed. Restarting computer in 10 seconds!" -ForegroundColor Red -BackgroundColor Yellow
-Start-Sleep -Seconds 1
-Clear-Host
-Write-Host "Base Bench Setup script has completed. Restarting computer in 9 seconds!" -ForegroundColor Red -BackgroundColor Yellow
-Start-Sleep -Seconds 1
-Clear-Host
-Write-Host "Base Bench Setup script has completed. Restarting computer in 8 seconds!" -ForegroundColor Red -BackgroundColor Yellow
-Start-Sleep -Seconds 1
-Clear-Host
-Write-Host "Base Bench Setup script has completed. Restarting computer in 7 seconds!" -ForegroundColor Red -BackgroundColor Yellow
-Start-Sleep -Seconds 1
-Clear-Host
-Write-Host "Base Bench Setup script has completed. Restarting computer in 6 seconds!" -ForegroundColor Red -BackgroundColor Yellow
-Start-Sleep -Seconds 1
-Clear-Host
-Write-Host "Base Bench Setup script has completed. Restarting computer in 5 seconds!" -ForegroundColor Red -BackgroundColor Yellow
-Start-Sleep -Seconds 1
-Clear-Host
-Write-Host "Base Bench Setup script has completed. Restarting computer in 4 seconds!" -ForegroundColor Red -BackgroundColor Yellow
-Start-Sleep -Seconds 1
-Clear-Host
-Write-Host "Base Bench Setup script has completed. Restarting computer in 3 seconds!" -ForegroundColor Red -BackgroundColor Yellow
-Start-Sleep -Seconds 1
-Clear-Host
-Write-Host "Base Bench Setup script has completed. Restarting computer in 2 seconds!" -ForegroundColor Red -BackgroundColor Yellow
-Start-Sleep -Seconds 1
-Clear-Host
-Write-Host "Base Bench Setup script has completed. Restarting computer in 1 seconds!" -ForegroundColor Red -BackgroundColor Yellow
-Start-Sleep -Seconds 1
-Clear-Host
-Restart-Computer -Force
+$delay = 10
+if($delay -gt 1)
+    {
+
+    Write-Output "Rebooting computer in $delay seconds -ForegroundColor Red -BackgroundColor Yellow";
+    #Start-Sleep -Seconds $delay
+     
+    while($delay -gt 0)
+    {
+        Start-Sleep -Seconds 1;
+        $delay -= 1;
+        Write-Output "Rebooting computer in $delay seconds -ForegroundColor Red -BackgroundColor Yellow";
+    }
+    }
+Shutdown /r
 Exit
