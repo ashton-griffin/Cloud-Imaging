@@ -1,43 +1,59 @@
+Write-Host "Beginning Base Bench Setup... Sit tight, this may take a little while!!!!!!"
+Write-Host "Renaming Computer"
 $SN = Get-WmiObject win32_bios | Select -ExpandProperty SerialNumber
 Rename-Computer -NewName 'RenameMe-$SN'
-Start-Process C:\Utils\CatchallAutomate.msi -ArgumentList '/qn' -WindowStyle Hidden
+Write-Host "Computer Renamed to RenameMe-$SN"
+Clear-Host
 
+
+Write-Host "Installing Connectwise Automate. Please be sure to move to proper company"
+Start-Process C:\Utils\CatchallAutomate.msi -ArgumentList '/qn'
+Clear-Host
+
+
+Write-Host "Removing all OEM Bloatware"
 $MicrosoftBloatwareApps = Get-AppxPackage | Where PackageFullName -NotLike *Store*
-
 foreach ($MicrosoftBloatwareApp in $MicrosoftBloatwareApps) {
             $PackageFullName = $MicrosoftBloatwareApp.PackageFullName
             Remove-AppxPackage -package $PackageFullName -confirm:$false -ErrorAction SilentlyContinue
+            Clear-Host
                                                             }
-                                                            
 $WindowsPCHealthCheck = Get-WmiObject win32_product | Where Name -Like "Windows PC Health Check"
 $WindowsPCHealthCheck.Uninstall()
 $McAfee = Get-WmiObject win32_product | Where Vendor -Like "*McAfee*"
 $McAfee.Uninstall()
+Clear-Host
 
 
+Write-Host "Installing Base Applications"
 Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))
-choco upgrade chocolatey
-choco upgrade adobereader -y
-choco upgrade googlechrome -y
-choco upgrade firefox -y
-choco upgrade microsoft-teams.install -y
-choco upgrade 7zip.install -y
-choco upgrade microsoft-edge -y
-choco upgrade zoom -y
-choco upgrade vlc -y
-choco upgrade 7zip -y
-choco upgrade powershell -y
+choco upgrade chocolatey -force -y
+choco upgrade adobereader -force -y
+choco upgrade googlechrome -force -y
+choco upgrade firefox -force -y
+choco upgrade microsoft-teams.install -force -y
+choco upgrade 7zip.install -force -y
+choco upgrade microsoft-edge -force -y
+choco upgrade zoom -force -y
+choco upgrade vlc -force -y
+choco upgrade 7zip -force -y
+choco upgrade powershell -force -y
 choco upgrade office365business --params "'/productid:O365BusinessRetail /exclude: Groove Lync Skype /language:en-US /updates:TRUE /eula:FALSE'" -force -y
 #choco upgrade microsoft-office-deployment /64bit /DisableUpdate FALSE /Channel Current /Language en-us /Product O365BusinessRetail
 choco upgrade dotnetfx -force -y
+Clear-Host
 
+
+Write-Host "Installing Manufacturer driver support software. Also, installing driver and BIOS updates."
 $Manufacturer = Get-WmiObject win32_bios | Select -ExpandProperty Manufacturer
 New-Item -Path C:\ -Name Utils -ItemType Directory -Force -ErrorAction SilentlyContinue
+Write-Host "Determined the Manufacturer of this workstation is $Manufacturer. Proceeding with correct driver software."
 
 If ($Manufacturer -like '*Dell*') {
+         Write-Host "Installing Dell Command Update. Updating drivers and BIOS."
          Set-ExecutionPolicy -ExecutionPolicy Bypass -Force -Scope Process
          [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
-         choco upgrade dellcommandupdate -y
+         choco upgrade dellcommandupdate -force -y
          Start-Sleep -Seconds 60
          Start-Service -Name DellClientManagementService
 
@@ -59,7 +75,8 @@ If ($Manufacturer -like '*Dell*') {
 
 If ($Manufacturer -like '*Lenovo*') {
 
-       choco upgrade lenovo-thinkvantage-system-update -y
+       choco upgrade lenovo-thinkvantage-system-update -force -y
+                    Write-Host "Installing Lenovo System Update. Updating drivers and BIOS."
                     Start-Sleep -Seconds 60
                     Start-Process "C:\Program Files (x86)\Lenovo\System Update\Tvsu.exe" -ArgumentList "/CM -search A -action INSTALL -noicon -includerebootpackages 1,3,4 -noreboot" -WindowStyle Hidden
 
@@ -67,18 +84,52 @@ If ($Manufacturer -like '*Lenovo*') {
 
 If ($Manufacturer -like '*HP*' -or '*Hewlett*') {
 
-        choco upgrade hpsupportassistant -y
+        choco upgrade hpsupportassistant -force -y
+                    Write-Host "Installing HP Support Assistant. Updating drivers and BIOS."
                     Start-Sleep -Seconds 60
                     Start-Process "C:\Utils\HPSA8\InstallHPSA.exe" -ArgumentList "/S /v/qn" -WindowStyle Hidden
 
 }
+Clear-Host
 
 
+Write-Host "Installing PSWindowsUpdate Module. Installing ALL available Windows and Optional Updates, including any feature updates."
 Set-ExecutionPolicy -ExecutionPolicy Bypass -Force -Scope Process
 [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.SecurityProtocolType]::Tls12
 Install-PackageProvider -Name NuGet -Force
 Install-Module -Name PSWindowsUpdate -Force
 Import-Module PSWindowsUpdate; Install-WindowsUpdate -AcceptAll -Install -AutoReboot
+Clear-Host
 
-Write-Host "Base Bench Setup script has completed. Restarting computer now!"
+
+Write-Host "Base Bench Setup script has completed. Restarting computer in 10 seconds!"
+Start-Sleep -Seconds 1
+Clear-Host
+Write-Host "Base Bench Setup script has completed. Restarting computer in 9 seconds!"
+Start-Sleep -Seconds 1
+Clear-Host
+Write-Host "Base Bench Setup script has completed. Restarting computer in 8 seconds!"
+Start-Sleep -Seconds 1
+Clear-Host
+Write-Host "Base Bench Setup script has completed. Restarting computer in 7 seconds!"
+Start-Sleep -Seconds 1
+Clear-Host
+Write-Host "Base Bench Setup script has completed. Restarting computer in 6 seconds!"
+Start-Sleep -Seconds 1
+Clear-Host
+Write-Host "Base Bench Setup script has completed. Restarting computer in 5 seconds!"
+Start-Sleep -Seconds 1
+Clear-Host
+Write-Host "Base Bench Setup script has completed. Restarting computer in 4 seconds!"
+Start-Sleep -Seconds 1
+Clear-Host
+Write-Host "Base Bench Setup script has completed. Restarting computer in 3 seconds!"
+Start-Sleep -Seconds 1
+Clear-Host
+Write-Host "Base Bench Setup script has completed. Restarting computer in 2 seconds!"
+Start-Sleep -Seconds 1
+Clear-Host
+Write-Host "Base Bench Setup script has completed. Restarting computer in 1 seconds!"
+Start-Sleep -Seconds 1
+Clear-Host
 Restart-Computer -Force
