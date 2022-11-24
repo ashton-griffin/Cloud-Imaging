@@ -79,3 +79,6 @@ Set-ExecutionPolicy -ExecutionPolicy Bypass -Force -Scope Process
 Install-PackageProvider -Name NuGet -Force
 Install-Module -Name PSWindowsUpdate -Force
 Import-Module PSWindowsUpdate; Install-WindowsUpdate -AcceptAll -Install -AutoReboot
+
+Write-Host "Base Bench Setup script has completed. Restarting computer now!"
+Restart-Computer -Force
