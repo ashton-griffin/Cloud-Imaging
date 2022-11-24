@@ -62,13 +62,13 @@ If ($Manufacturer -like '*Dell*') {
 
      If ($DCU_x86 -eq $true){
 
-                    Start-Process "C:\Program Files (x86)\Dell\CommandUpdate\dcu-cli.exe" -ArgumentList "/applyUpdates" -WindowStyle Hidden
+                    Start-Process "C:\Program Files (x86)\Dell\CommandUpdate\dcu-cli.exe" -ArgumentList "/applyUpdates"
 
                         }
 
      If ($DCU_x64 -eq $true){
 
-                    Start-Process "C:\Program Files\Dell\CommandUpdate\dcu-cli.exe" -ArgumentList "/applyUpdates" -WindowStyle Hidden
+                    Start-Process "C:\Program Files\Dell\CommandUpdate\dcu-cli.exe" -ArgumentList "/applyUpdates"
 
                         }
                                  }
@@ -133,3 +133,4 @@ Write-Host "Base Bench Setup script has completed. Restarting computer in 1 seco
 Start-Sleep -Seconds 1
 Clear-Host
 Restart-Computer -Force
+Exit
