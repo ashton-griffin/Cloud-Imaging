@@ -1,12 +1,12 @@
+Write-Host "Setting script execution policy and to TLS1.2" -ForegroundColor Blue -BackgroundColor Yellow
+         Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope CurrentUser -Force
+         [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
+
 Install-Module WriteAscii -Force
 Write-Ascii -InputObject "S5 Logic - Cloud Imaging"
 
 Write-Ascii -InputObject "Beginning Base Bench Setup"
 Write-Host "Sit tight, grab a drink this may take a while!!!" -ForegroundColor Blue -BackgroundColor Yellow
-
-Write-Host "Setting script execution policy and to TLS1.2" -ForegroundColor Blue -BackgroundColor Yellow
-         Set-ExecutionPolicy -ExecutionPolicy Bypass -Force -Scope Process
-         [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
 
 
 Write-Ascii -InputObject "Renaming Computer"         
@@ -25,9 +25,10 @@ Write-Ascii -InputObject "Removing OEM Bloat"
 Write-Host "Removing all OEM Bloatware" -ForegroundColor Blue -BackgroundColor Yellow
 $MicrosoftBloatwareApps = Get-AppxPackage | Where PackageFullName -NotLike *Store*
 foreach ($MicrosoftBloatwareApp in $MicrosoftBloatwareApps) {
+
             $PackageFullName = $MicrosoftBloatwareApp.PackageFullName
             Remove-AppxPackage -package $PackageFullName -confirm:$false -ErrorAction SilentlyContinue
-            Clear-Host
+
                                                             }
 $WindowsPCHealthCheck = Get-WmiObject win32_product | Where Name -Like "Windows PC Health Check"
 $WindowsPCHealthCheck.Uninstall()
