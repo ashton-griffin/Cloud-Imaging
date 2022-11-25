@@ -1,3 +1,5 @@
+Start-Transcript -OutputDirectory "C:\Utils" -IncludeInvocationHeader
+
 Write-Host "Setting script execution policy and to TLS1.2" -ForegroundColor Blue -BackgroundColor Yellow
         Set-ExecutionPolicy -ExecutionPolicy Bypass -Force -Scope Process
         [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.SecurityProtocolType]::Tls12
@@ -132,12 +134,13 @@ if($delay -gt 1)
     #Start-Sleep -Seconds $delay
      
     while($delay -gt 0)
-    {
+        {
         Start-Sleep -Seconds 1;
         $delay -= 1;
         Write-Output "Rebooting computer in $delay seconds -ForegroundColor Blue -BackgroundColor Yellow";
-    }
+        }
     }
 
+Stop-Transcript
 Shutdown /r
 Exit
