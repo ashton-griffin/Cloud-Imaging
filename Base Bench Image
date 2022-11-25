@@ -31,6 +31,7 @@ Write-Ascii -InputObject "Installing Base Applications"
 Write-Host "Installing Base Applications" -ForegroundColor Blue -BackgroundColor Yellow
 choco upgrade chocolatey -force -y --limitoutput
 choco upgrade adobereader -force -y --limitoutput
+choco upgrade microsoft-edge -force -y --limitoutput
 choco upgrade googlechrome --ignore-checksums -force -y --limitoutput
 choco upgrade firefox -force -y --limitoutput
 choco upgrade microsoft-teams.install -force -y --limitoutput
