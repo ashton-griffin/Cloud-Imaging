@@ -1,13 +1,16 @@
 Write-Host "Setting script execution policy and to TLS1.2" -ForegroundColor Blue -BackgroundColor Yellow
-         Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope CurrentUser -Force
-         [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
+        Set-ExecutionPolicy -ExecutionPolicy Bypass -Force -Scope Process
+        [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.SecurityProtocolType]::Tls12
+        Install-PackageProvider -Name NuGet -Force
+        Install-Module WriteAscii -Force
+        Install-Module PSWindowsUpdate -Force
+        Invoke-Expression ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))
 
-Install-Module WriteAscii -Force
 Write-Ascii -InputObject "S5 Logic - Cloud Imaging"
 
-Write-Ascii -InputObject "Beginning Base Bench Setup"
+Write-Ascii -InputObject "Beginning Base Bench Setup...."
 Write-Host "Sit tight, grab a drink this may take a while!!!" -ForegroundColor Blue -BackgroundColor Yellow
-
+Start-Sleep -Seconds 10
 
 Write-Ascii -InputObject "Renaming Computer"         
 Write-Host "Renaming Computer" -ForegroundColor Blue -BackgroundColor Yellow
@@ -23,6 +26,7 @@ Clear-Host
 
 Write-Ascii -InputObject "Removing OEM Bloat"
 Write-Host "Removing all OEM Bloatware" -ForegroundColor Blue -BackgroundColor Yellow
+
 $MicrosoftBloatwareApps = Get-AppxPackage | Where PackageFullName -NotLike *Store*
 foreach ($MicrosoftBloatwareApp in $MicrosoftBloatwareApps) {
 
@@ -30,6 +34,8 @@ foreach ($MicrosoftBloatwareApp in $MicrosoftBloatwareApps) {
             Remove-AppxPackage -package $PackageFullName -confirm:$false -ErrorAction SilentlyContinue
 
                                                             }
+RefreshEnv.cmd
+Start-Sleep -Seconds 10
 $WindowsPCHealthCheck = Get-WmiObject win32_product | Where Name -Like "Windows PC Health Check"
 $WindowsPCHealthCheck.Uninstall()
 $McAfee = Get-WmiObject win32_product | Where Vendor -Like "*McAfee*"
@@ -39,7 +45,6 @@ Clear-Host
 
 Write-Ascii -InputObject "Installing Base Applications"
 Write-Host "Installing Base Applications" -ForegroundColor Blue -BackgroundColor Yellow
-Invoke-Expression ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))
 choco upgrade chocolatey -force -y --limitoutput
 choco upgrade adobereader -force -y --limitoutput
 choco upgrade googlechrome --ignore-checksums -force -y --limitoutput
@@ -112,10 +117,9 @@ If ($Manufacturer -like '*Hewlett*') {
 
 Clear-Host
 
+
 Write-Ascii -InputObject "Installing available Windows and optional updates"
 Write-Host "Installing PSWindowsUpdate Module. Installing ALL available Windows and Optional Updates, including any feature updates." -ForegroundColor Blue -BackgroundColor Yellow
-Install-PackageProvider -Name NuGet -Force
-Install-Module -Name PSWindowsUpdate -Force
 Get-WindowsUpdate -Install -AutoReboot
 Clear-Host
 
