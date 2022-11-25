@@ -26,19 +26,6 @@ Write-Host "Installing Connectwise Automate. Please be sure to move to proper co
 Start-Process C:\Utils\CatchallAutomate.msi -ArgumentList '/qn'
 Clear-Host
 
-Write-Ascii -InputObject "Removing OEM Bloat"
-Write-Host "Removing all OEM Bloatware" -ForegroundColor Blue -BackgroundColor Yellow
-
-$MicrosoftBloatwareApps = Get-AppxPackage | Where PackageFullName -NotLike *Store*
-foreach ($MicrosoftBloatwareApp in $MicrosoftBloatwareApps) {
-
-            $PackageFullName = $MicrosoftBloatwareApp.PackageFullName
-            Remove-AppxPackage -package $PackageFullName -confirm:$false -ErrorAction SilentlyContinue
-
-                                                            }
-RefreshEnv.cmd
-Clear-Host
-
 
 Write-Ascii -InputObject "Installing Base Applications"
 Write-Host "Installing Base Applications" -ForegroundColor Blue -BackgroundColor Yellow
