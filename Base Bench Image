@@ -35,7 +35,6 @@ choco upgrade googlechrome --ignore-checksums -force -y --limitoutput
 choco upgrade firefox -force -y --limitoutput
 choco upgrade microsoft-teams.install -force -y --limitoutput
 choco upgrade 7zip.install -force -y --limitoutput
-choco upgrade microsoft-edge -force -y --limitoutput
 choco upgrade zoom -force -y --limitoutput
 choco upgrade vlc -force -y --limitoutput
 choco upgrade 7zip -force -y --limitoutput
