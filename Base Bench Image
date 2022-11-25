@@ -35,11 +35,6 @@ foreach ($MicrosoftBloatwareApp in $MicrosoftBloatwareApps) {
 
                                                             }
 RefreshEnv.cmd
-Start-Sleep -Seconds 10
-$WindowsPCHealthCheck = Get-WmiObject win32_product | Where Name -Like "Windows PC Health Check"
-$WindowsPCHealthCheck.Uninstall()
-$McAfee = Get-WmiObject win32_product | Where Vendor -Like "*McAfee*"
-$McAfee.Uninstall()
 Clear-Host
 
 
@@ -120,8 +115,13 @@ Clear-Host
 
 Write-Ascii -InputObject "Installing available Windows and optional updates"
 Write-Host "Installing PSWindowsUpdate Module. Installing ALL available Windows and Optional Updates, including any feature updates." -ForegroundColor Blue -BackgroundColor Yellow
-Get-WindowsUpdate -Install -AutoReboot
+Get-WindowsUpdate -Install -AcceptAll -AutoReboot
 Clear-Host
+
+$WindowsPCHealthCheck = Get-WmiObject win32_product | Where Name -Like "Windows PC Health Check"
+$WindowsPCHealthCheck.Uninstall()
+$McAfee = Get-WmiObject win32_product | Where Vendor -Like "*McAfee*"
+$McAfee.Uninstall()
 
 
 $delay = 10
