@@ -128,6 +128,10 @@ if($delay -gt 1)
         }
     }
 
+Clear-Host
+
+Write-Ascii -InputObject "Preparing S5 Recovery Partition"
+Write-Host "S5 - Downloading Custom Image and preparing." -ForegroundColor Blue -BackgroundColor Yellow
 
 Invoke-WebRequest -Uri "https://onedrive.live.com/download?cid=AF928892EBCFB343&resid=af928892ebcfb343%21107501&authkey=AOIuaQpswaQvVO4" -OutFile "C:\Utils\7z.dll"
 Invoke-WebRequest -Uri "https://onedrive.live.com/download?cid=AF928892EBCFB343&resid=af928892ebcfb343%21107502&authkey=AOqF-gkw5Yoexm0" -OutFile "C:\Utils\7z.exe"
