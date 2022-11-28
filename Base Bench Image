@@ -7,6 +7,8 @@ Write-Host "Setting script execution policy and to TLS1.2" -ForegroundColor Blue
         Install-Module WriteAscii -Force
         Install-Module PSWindowsUpdate -Force
         Invoke-Expression ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))
+        Install-Script -Name Get-WindowsAutoPilotInfo -Force
+        Get-WindowsAutoPilotInfo -OutputFile C:\Utils\AutoPilotHWInfo.csv
 
 Write-Ascii -InputObject "S5 Logic - Cloud Imaging"
 
