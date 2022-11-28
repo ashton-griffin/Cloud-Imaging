@@ -109,10 +109,10 @@
     <settings pass="specialize">
         <component language="neutral" name="Microsoft-Windows-International-Core" processorArchitecture="amd64" publicKeyToken="31bf3856ad364e35" versionScope="nonSxS" xmlns:wcm="http://schemas.microsoft.com/WMIConfig/2002/State" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
             <InputLocale>0409:00000409</InputLocale>
-            <SystemLocale>en-US</SystemLocale>
-            <UILanguage>en-US</UILanguage>
-            <UILanguageFallback>en-US</UILanguageFallback>
-            <UserLocale>en-US</UserLocale>
+            <SystemLocale>EN-US</SystemLocale>
+            <UILanguage>EN-US</UILanguage>
+            <UILanguageFallback>EN-US</UILanguageFallback>
+            <UserLocale>EN-US</UserLocale>
         </component>
         <component language="neutral" name="Microsoft-Windows-Security-SPP-UX" processorArchitecture="amd64" publicKeyToken="31bf3856ad364e35" versionScope="nonSxS" xmlns:wcm="http://schemas.microsoft.com/WMIConfig/2002/State" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
             <SkipAutoActivation>true</SkipAutoActivation>
@@ -122,6 +122,13 @@
         </component>
     </settings>
     <settings pass="oobeSystem">
+	<component name="Microsoft-Windows-International-Core" processorArchitecture="amd64" publicKeyToken="31bf3856ad364e35" language="neutral" versionScope="nonSxS" xmlns:wcm="http://schemas.microsoft.com/WMIConfig/2002/State" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+            <InputLocale>0409:00000409</InputLocale>
+            <SystemLocale>EN-US</SystemLocale>
+            <UILanguage>EN-US</UILanguage>
+            <UILanguageFallback>EN-US</UILanguageFallback>
+            <UserLocale>EN-US</UserLocale>
+        </component>
         <component language="neutral" name="Microsoft-Windows-Shell-Setup" processorArchitecture="amd64" publicKeyToken="31bf3856ad364e35" versionScope="nonSxS" xmlns:wcm="http://schemas.microsoft.com/WMIConfig/2002/State" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
             <OOBE>
                 <HideEULAPage>true</HideEULAPage>
@@ -138,6 +145,10 @@
                         <DisplayName>S5Ladmin</DisplayName>
                         <Group>Administrators</Group>
                         <Name>S5Ladmin</Name>
+						<Password>
+						<Value></Value>
+						<PlainText>true</PlainText>
+						</Password>
                     </LocalAccount>
                 </LocalAccounts>
             </UserAccounts>
@@ -160,7 +171,7 @@
                 <SynchronousCommand wcm:action="add">
                     <Order>3</Order>
                     <RequiresUserInput>false</RequiresUserInput>
-                    <CommandLine>cmd /C wmic useraccount where name="s5ladmin" set PasswordExpires=false</CommandLine>
+                    <CommandLine>cmd /C wmic useraccount where name="S5Ladmin" set PasswordExpires=false</CommandLine>
                     <Description>Password Never Expires</Description>
                 </SynchronousCommand>
                 <SynchronousCommand wcm:action="add">
