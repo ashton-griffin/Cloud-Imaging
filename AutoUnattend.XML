@@ -12,42 +12,40 @@
             <UserLocale>en-US</UserLocale>
         </component>
         <component language="neutral" name="Microsoft-Windows-Setup" processorArchitecture="amd64" publicKeyToken="31bf3856ad364e35" versionScope="nonSxS" xmlns:wcm="http://schemas.microsoft.com/WMIConfig/2002/State" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-            <DiskConfiguration>
+            
+			
+			<DiskConfiguration>
                 <Disk wcm:action="add">
-                    <DiskID>0</DiskID>
-                    <WillWipeDisk>true</WillWipeDisk>
                     <CreatePartitions>
                         <!-- Windows RE Tools partition -->
                         <CreatePartition wcm:action="add">
                             <Order>1</Order>
+                            <Size>10240</Size>
                             <Type>Primary</Type>
-                            <Size>500</Size>
                         </CreatePartition>
+
                         <!-- System partition (ESP) -->
                         <CreatePartition wcm:action="add">
                             <Order>2</Order>
-                            <Type>EFI</Type>
                             <Size>100</Size>
+                            <Type>EFI</Type>
                         </CreatePartition>
-                        <!-- WINRETOOL partition -->
-                        <CreatePartition wcm:action="add">
-                            <Order>3</Order>
-                            <Type>Primary</Type>
-                            <Size>10240</Size>
-                        </CreatePartition>
+
                         <!-- Microsoft reserved partition (MSR) -->
                         <CreatePartition wcm:action="add">
-                            <Order>4</Order>
-                            <Type>MSR</Type>
+                            <Order>3</Order>
                             <Size>128</Size>
+                            <Type>MSR</Type>
                         </CreatePartition>
+
                         <!-- Windows partition -->
                         <CreatePartition wcm:action="add">
-                            <Order>5</Order>
+                            <Order>4</Order>
+                            <Extend>true</Extend> 
                             <Type>Primary</Type>
-                            <Extend>true</Extend>
                         </CreatePartition>
                     </CreatePartitions>
+
                     <ModifyPartitions>
                         <!-- Windows RE Tools partition -->
                         <ModifyPartition wcm:action="add">
@@ -55,8 +53,9 @@
                             <PartitionID>1</PartitionID>
                             <Label>WINRE</Label>
                             <Format>NTFS</Format>
-                            <TypeID>DE94BBA4-06D1-4D40-A16A-BFD50179D6AC</TypeID>
+                            <TypeID>de94bba4-06d1-4d40-a16a-bfd50179d6ac</TypeID>
                         </ModifyPartition>
+
                         <!-- System partition (ESP) -->
                         <ModifyPartition wcm:action="add">
                             <Order>2</Order>
@@ -64,46 +63,50 @@
                             <Label>System</Label>
                             <Format>FAT32</Format>
                         </ModifyPartition>
-                        <!-- MSR partition does not need to be modified -->
+
+                        <!-- Microsoft reserved partition (MSR) -->
                         <ModifyPartition wcm:action="add">
-                            <Order>4</Order>
-                            <PartitionID>4</PartitionID>
-                        </ModifyPartition>
-                        <!-- Windows partition -->
-                        <ModifyPartition wcm:action="add">
-                            <Order>5</Order>
-                            <PartitionID>5</PartitionID>
-                            <Label>OS</Label>
-                            <Letter>C</Letter>
-                            <Format>NTFS</Format>
-                        </ModifyPartition>
-                        <ModifyPartition wcm:action="add">
-                            <Format>NTFS</Format>
-                            <Label>WINRETOOLS</Label>
                             <Order>3</Order>
                             <PartitionID>3</PartitionID>
                         </ModifyPartition>
+
+                        <!-- Windows partition -->
+                        <ModifyPartition wcm:action="add">
+                            <Order>4</Order>
+                            <PartitionID>4</PartitionID>
+                            <Label>Windows</Label>
+                            <Format>NTFS</Format>
+                        </ModifyPartition>
                     </ModifyPartitions>
+                    <DiskID>0</DiskID>
+                    <WillWipeDisk>true</WillWipeDisk>
                 </Disk>
+                <WillShowUI>OnError</WillShowUI>
             </DiskConfiguration>
             <ImageInstall>
                 <OSImage>
                     <InstallTo>
                         <DiskID>0</DiskID>
-                        <PartitionID>5</PartitionID>
+                        <PartitionID>4</PartitionID>
                     </InstallTo>
-                    <InstallToAvailablePartition>false</InstallToAvailablePartition>
                 </OSImage>
             </ImageInstall>
             <UserData>
-                <AcceptEula>true</AcceptEula>
-                <FullName>S5Ladmin</FullName>
-                <Organization />
                 <ProductKey>
+                    <WillShowUI>OnError</WillShowUI>
                     <Key>VK7JG-NPHTM-C97JM-9MPGT-3V66T</Key>
                 </ProductKey>
+                <AcceptEula>true</AcceptEula>
             </UserData>
+			
             <EnableFirewall>false</EnableFirewall>
+        </component>
+        <component name="Microsoft-Windows-PnpCustomizationsWinPE" processorArchitecture="amd64" publicKeyToken="31bf3856ad364e35" language="neutral" versionScope="nonSxS" xmlns:wcm="http://schemas.microsoft.com/WMIConfig/2002/State" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+            <DriverPaths>
+                <PathAndCredentials wcm:action="add" wcm:keyValue="1">
+                    <Path>C:\Utils\Drivers</Path>
+                </PathAndCredentials>
+            </DriverPaths>
         </component>
     </settings>
     <settings pass="specialize">
@@ -122,7 +125,7 @@
         </component>
     </settings>
     <settings pass="oobeSystem">
-	<component name="Microsoft-Windows-International-Core" processorArchitecture="amd64" publicKeyToken="31bf3856ad364e35" language="neutral" versionScope="nonSxS" xmlns:wcm="http://schemas.microsoft.com/WMIConfig/2002/State" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+        <component name="Microsoft-Windows-International-Core" processorArchitecture="amd64" publicKeyToken="31bf3856ad364e35" language="neutral" versionScope="nonSxS" xmlns:wcm="http://schemas.microsoft.com/WMIConfig/2002/State" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
             <InputLocale>0409:00000409</InputLocale>
             <SystemLocale>EN-US</SystemLocale>
             <UILanguage>EN-US</UILanguage>
@@ -145,10 +148,10 @@
                         <DisplayName>S5Ladmin</DisplayName>
                         <Group>Administrators</Group>
                         <Name>S5Ladmin</Name>
-						<Password>
-						<Value></Value>
-						<PlainText>true</PlainText>
-						</Password>
+                        <Password>
+                            <Value></Value>
+                            <PlainText>true</PlainText>
+                        </Password>
                     </LocalAccount>
                 </LocalAccounts>
             </UserAccounts>
