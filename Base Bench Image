@@ -138,17 +138,13 @@ Write-Host "S5 - Downloading Custom Image and preparing." -ForegroundColor Blue 
 
 #Invoke-WebRequest -Uri "https://onedrive.live.com/download?cid=AF928892EBCFB343&resid=af928892ebcfb343%21107501&authkey=AOIuaQpswaQvVO4" -OutFile "C:\Utils\7z.dll"
 #Invoke-WebRequest -Uri "https://onedrive.live.com/download?cid=AF928892EBCFB343&resid=af928892ebcfb343%21107502&authkey=AOqF-gkw5Yoexm0" -OutFile "C:\Utils\7z.exe"
-
 #Invoke-WebRequest -Uri "https://onedrive.live.com/download?cid=AF928892EBCFB343&resid=AF928892EBCFB343%21143781&authkey=AJ0LRrZ1wmd5M6k" -OutFile "C:\Utils\S5_Win10PROx64.iso"
-
 #Unblock-File -Path "C:\Utils\7z.exe"
 #Unblock-File -Path "C:\Utils\7z.exe"
 #Unblock-File -Path "C:\Utils\S5_Win10PROx64.iso"
 
 #New-Item -Path C:\Utils -Name WindowsISO -ItemType Directory -Force
-
 #Start-Process -FilePath "C:\Utils\7z.exe" -ArgumentList 'x C:\Utils\S5_Win10PROx64.iso -oc:\Utils\WindowsISO -y'
-
 #Move-Item -Path C:\Utils\WindowsISO\* -Destination D:\ -Force
 
 #Remove-Item C:\Utils\WindowsISO -Force
