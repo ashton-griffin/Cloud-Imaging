@@ -11,8 +11,8 @@ Write-Host "Setting script execution policy and to TLS1.2" -ForegroundColor Blue
         Get-WindowsAutoPilotInfo -OutputFile C:\Utils\AutoPilotHWInfo.csv
 
 Write-Ascii -InputObject "S5 Logic - Cloud Imaging"
-
 Write-Ascii -InputObject "Beginning Base Bench Setup...."
+
 Write-Host "Sit tight, grab a drink this may take a while!!!" -ForegroundColor Blue -BackgroundColor Yellow
 Start-Sleep -Seconds 10
 
@@ -37,7 +37,6 @@ Write-Host "Installing Base Applications" -ForegroundColor Blue -BackgroundColor
                 choco upgrade googlechrome --ignore-checksums -force -y --limitoutput
                 choco upgrade firefox -force -y --limitoutput
                 choco upgrade microsoft-teams.install -force -y --limitoutput
-                choco upgrade 7zip.install -force -y --limitoutput
                 choco upgrade zoom -force -y --limitoutput
                 choco upgrade vlc -force -y --limitoutput
                 choco upgrade 7zip -force -y --limitoutput
@@ -45,6 +44,7 @@ Write-Host "Installing Base Applications" -ForegroundColor Blue -BackgroundColor
                 choco upgrade office365business --package-parameters="'/productid:O365BusinessRetail /exclude: Groove Lync Skype /language:en-US /updates:TRUE /eula:TRUE'" -force -y --limitoutput
                 choco upgrade dotnetfx -force -y --limitoutput
                 choco upgrade itunes -force -y --limitoutput
+                choco upgrade microsoft-windows-terminal -force -y --limitoutput
 Clear-Host
 
 
@@ -112,9 +112,12 @@ Clear-Host
 
 $WindowsPCHealthCheck = Get-WmiObject win32_product | Where Name -Like "Windows PC Health Check"
 $WindowsPCHealthCheck.Uninstall()
+
+$MicrosoftUpdateHealthTools = Get-WmiObject win32_product | Where Name -Like "Microsoft Update Health Tools"
+$MicrosoftUpdateHealthTools.Uninstall()
+
 $McAfee = Get-WmiObject win32_product | Where Vendor -Like "*McAfee*"
 $McAfee.Uninstall()
-
 
 $delay = 10
 if($delay -gt 1)
