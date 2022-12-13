@@ -31,6 +31,8 @@ Clear-Host
 
 Write-Ascii -InputObject "Installing Base Applications"
 Write-Host "Installing Base Applications" -ForegroundColor Blue -BackgroundColor Yellow
+                Invoke-WebRequest -Uri "https://github.com/microsoft/winget-cli/releases/download/v1.1.12653/Microsoft.DesktopAppInstaller_8wekyb3d8bbwe.msixbundle" -OutFile "C:\Utils\WinGet.msixbundle"
+                Add-AppxPackage "C:\Utils\WinGet.msixbundle"
                 choco upgrade chocolatey -force -y --limitoutput
                 choco upgrade adobereader -force -y --limitoutput
                 choco upgrade adobe-creative-cloud -force -y --limitoutput
@@ -136,22 +138,7 @@ if($delay -gt 1)
 
 Clear-Host
 
-Write-Ascii -InputObject "Preparing S5 Recovery Partition"
-Write-Host "S5 - Downloading Custom Image and preparing." -ForegroundColor Blue -BackgroundColor Yellow
 
-#Invoke-WebRequest -Uri "https://onedrive.live.com/download?cid=AF928892EBCFB343&resid=af928892ebcfb343%21107501&authkey=AOIuaQpswaQvVO4" -OutFile "C:\Utils\7z.dll"
-#Invoke-WebRequest -Uri "https://onedrive.live.com/download?cid=AF928892EBCFB343&resid=af928892ebcfb343%21107502&authkey=AOqF-gkw5Yoexm0" -OutFile "C:\Utils\7z.exe"
-#Invoke-WebRequest -Uri "https://onedrive.live.com/download?cid=AF928892EBCFB343&resid=AF928892EBCFB343%21143781&authkey=AJ0LRrZ1wmd5M6k" -OutFile "C:\Utils\S5_Win10PROx64.iso"
-#Unblock-File -Path "C:\Utils\7z.exe"
-#Unblock-File -Path "C:\Utils\7z.exe"
-#Unblock-File -Path "C:\Utils\S5_Win10PROx64.iso"
-
-#New-Item -Path C:\Utils -Name WindowsISO -ItemType Directory -Force
-#Start-Process -FilePath "C:\Utils\7z.exe" -ArgumentList 'x C:\Utils\S5_Win10PROx64.iso -oc:\Utils\WindowsISO -y'
-#Move-Item -Path C:\Utils\WindowsISO\* -Destination D:\ -Force
-
-#Remove-Item C:\Utils\WindowsISO -Force
-#Remove-Item C:\Utils\S5_Win10PROx64.iso -Force
 
 Shutdown /r
 Stop-Transcript
