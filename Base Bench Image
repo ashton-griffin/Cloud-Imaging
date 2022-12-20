@@ -36,7 +36,7 @@ Write-Host "Installing Base Applications" -ForegroundColor Blue -BackgroundColor
                 choco upgrade chocolatey -force -y --limitoutput
                 choco upgrade adobereader -force -y --limitoutput
                 choco upgrade adobe-creative-cloud -force -y --limitoutput
-                choco upgrade googlechrome --ignore-checksums -force -y --limitoutput
+                winget upgrade "Google Chrome" -h --accept-package-agreements --accept-source-agreements
                 choco upgrade firefox -force -y --limitoutput
                 choco upgrade microsoft-teams.install -force -y --limitoutput
                 choco upgrade zoom -force -y --limitoutput
