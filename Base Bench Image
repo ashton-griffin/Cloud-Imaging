@@ -16,19 +16,6 @@ Write-Ascii -InputObject "Beginning Base Bench Setup...."
 Write-Host "Sit tight, grab a drink this may take a while!!!" -ForegroundColor Blue -BackgroundColor Yellow
 Start-Sleep -Seconds 10
 
-Write-Ascii -InputObject "Renaming Computer"         
-Write-Host "Renaming Computer" -ForegroundColor Blue -BackgroundColor Yellow
-$SN = Get-WmiObject win32_bios | Select -ExpandProperty SerialNumber
-Rename-Computer -NewName 'RenameMe-$SN'
-Write-Host "Computer Renamed to RenameMe-$SN" -ForegroundColor Blue -BackgroundColor Yellow
-Clear-Host
-
-Write-Ascii -InputObject "Installing Catchall version of RMM"
-Write-Host "Installing Connectwise Automate. Please be sure to move to proper company" -ForegroundColor Blue -BackgroundColor Yellow
-Start-Process C:\Utils\CatchallAutomate.msi -ArgumentList '/qn'
-Clear-Host
-
-
 Write-Ascii -InputObject "Installing Base Applications"
 Write-Host "Installing Base Applications" -ForegroundColor Blue -BackgroundColor Yellow
                 Invoke-WebRequest -Uri "https://github.com/microsoft/winget-cli/releases/download/v1.1.12653/Microsoft.DesktopAppInstaller_8wekyb3d8bbwe.msixbundle" -OutFile "C:\Utils\WinGet.msixbundle"
