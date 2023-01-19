@@ -32,7 +32,7 @@ Write-Host "Installing Base Applications" -ForegroundColor Blue -BackgroundColor
                 choco upgrade office365business --package-parameters="'/productid:O365BusinessRetail /exclude: Groove Lync Skype /language:en-US /updates:TRUE /eula:TRUE'" -force -y --limitoutput
                 choco upgrade dotnetfx -force -y --limitoutput
                 choco upgrade microsoft-windows-terminal -force -y --limitoutput
-Clear-Host
+
 
 
 Write-Ascii -InputObject "Installing Manufacturer Support Software"
@@ -89,13 +89,22 @@ If ($Manufacturer -like '*Hewlett*') {
 
                                                 }
 
-Clear-Host
+
 
 
 Write-Ascii -InputObject "Installing available Windows and optional updates"
 Write-Host "Installing PSWindowsUpdate Module. Installing ALL available Windows and Optional Updates, including any feature updates." -ForegroundColor Blue -BackgroundColor Yellow
 Get-WindowsUpdate -Install -AcceptAll -AutoReboot | Select InstallResult, Title, Description | Format-Table
-Clear-Host
+
+
+
+Write-Ascii -InputObject "Installing available Windows and optional updates"
+Write-Host "Removing built any built-in bloatware and preventing potential reinstalls." -ForegroundColor Blue -BackgroundColor Yellow
+
+(new-object Net.WebClient).DownloadString('https://raw.githubusercontent.com/w159/Cloud-Imaging/main/Bloatware%20-%20Remove%20and%20Prevent%20Reinstall.ps1') | iex
+RemoveDefaultApps
+DisableCortana
+RemoveXboxBloat
 
 $WindowsPCHealthCheck = Get-WmiObject win32_product | Where Name -Like "Windows PC Health Check"
 $WindowsPCHealthCheck.Uninstall()
@@ -121,9 +130,9 @@ if($delay -gt 1)
         }
     }
 
-Clear-Host
 
 
 
-Shutdown /r
+Restart-Computer -Force
+
 Stop-Transcript
