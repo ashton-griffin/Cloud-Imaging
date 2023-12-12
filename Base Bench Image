@@ -10,7 +10,7 @@ Write-Host "Setting script execution policy and to TLS1.2" -ForegroundColor Blue
         Install-Script -Name Get-WindowsAutoPilotInfo -Force
         Get-WindowsAutoPilotInfo -OutputFile C:\Utils\AutoPilotHWInfo.csv
 
-Write-Ascii -InputObject "S5 Logic - Cloud Imaging"
+Write-Ascii -InputObject "w159 - Cloud Imaging"
 Write-Ascii -InputObject "Beginning Base Bench Setup...."
 
 Write-Host "Sit tight, grab a drink this may take a while!!!" -ForegroundColor Blue -BackgroundColor Yellow
