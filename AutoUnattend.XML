@@ -174,7 +174,7 @@
                 <SynchronousCommand wcm:action="add">
                     <Order>3</Order>
                     <RequiresUserInput>false</RequiresUserInput>
-                    <CommandLine>cmd /C wmic useraccount where name="S5Ladmin" set PasswordExpires=false</CommandLine>
+                    <CommandLine>cmd /C wmic useraccount where name="ladmin" set PasswordExpires=false</CommandLine>
                     <Description>Password Never Expires</Description>
                 </SynchronousCommand>
                 <SynchronousCommand wcm:action="add">
